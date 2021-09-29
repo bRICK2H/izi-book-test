@@ -101,9 +101,14 @@ export default {
 			return Math.floor(Math.random() * (max + 1 - min)) + min
 		}
 	},
-	created() {
-		this.generateTemplate()
-	}
+	watch: {
+		isModal: {
+			immediate: true,
+			handler() {
+				this.generateTemplate()
+			}
+		}
+	},
 }
 </script>
 
