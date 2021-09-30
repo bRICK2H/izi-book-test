@@ -13,18 +13,31 @@
 		>
 			Начать тест
 		</button>
-		<div v-else-if="!isModal"
-			class="table-result wrapper__table-result"
-		>
-			<h2 class="table-result-title">Результат: </h2>
-			<div v-for="({template, isResult}, i) of result"
-				:key="i"
-				class="table-result__table-result-item table-result-item"
-				:class="isResult ? 'table-result-item--true' : 'table-result-item--false'"
-			>
-				{{ i + 1 }}. {{ template }}
+		<template v-else-if="!isModal">
+
+			<div class="wrapper__container-result container-result">
+				<div class="table-result container-result__table-result">
+					<h2 class="table-result-title">Результат: </h2>
+					<div v-for="({template, isResult}, i) of result"
+						:key="i"
+						class="table-result__table-result-item table-result-item"
+						:class="isResult ? 'table-result-item--true' : 'table-result-item--false'"
+					>
+						{{ i + 1 }}. {{ template }}
+					</div>
+				</div>
+				<div class="total-result">
+					<p class="total-result-box">
+						<span class="total-result-item">Правильных ответов:</span>
+						{{ getAmountResult(true) }}
+					</p>
+					<p class="total-result-box">
+						<span class="total-result-item">Неправильных ответов:</span>
+						{{ getAmountResult(false) }}
+					</p>
+				</div>
 			</div>
-		</div>
+		</template>
 	</div>
 </template>
 
@@ -40,6 +53,11 @@ export default {
 		isModal: false,
 		result: []
 	}),
+	methods: {
+		getAmountResult(bool) {
+			return this.result.filter(({ isResult }) => isResult === bool).length
+		}
+	}
 }
 </script>
 
@@ -56,7 +74,7 @@ export default {
 		display: flex;
 
 		&__start-btn,
-		&__table-result {
+		&__container-result {
 			margin: auto;
 		}
 	}
@@ -74,7 +92,12 @@ export default {
 			background-color: #2f2f2f;
 		}
 	}
+	.container-result {
 
+		&__table-result {
+			margin-bottom: 20px;
+		}
+	}
 	.table-result {
 		max-height: 50%;
 		overflow: auto;
@@ -87,6 +110,10 @@ export default {
 		&__table-result-item {
 			margin-bottom: 5px;
 		}
+	}
+	.total-result {
+		display: flex;
+		flex-direction: column;
 	}
 	.table-result-title {
 		margin-bottom: 10px;
@@ -101,5 +128,15 @@ export default {
 		&--false {
 			background-color: rgba(248, 215, 218, 1);
 		}
+	}
+	.total-result-box {
+		display: flex;
+		justify-content: space-between;
+	}
+	.total-result-item {
+		display: inline-block;
+		font-weight: 600;
+		font-style: italic;
+		margin-right: 10px;
 	}
 </style>
